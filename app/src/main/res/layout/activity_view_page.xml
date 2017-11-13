@@ -1,32 +1,41 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context="com.land.myfeature.ViewPageActivity">
-
-    <android.support.constraint.Guideline
-        android:id="@+id/guideline"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        app:layout_constraintGuide_begin="518dp" />
+    android:layout_height="match_parent">
 
     <android.support.v4.view.ViewPager
-        android:id="@+id/vp_viewpage"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        app:layout_constraintBottom_toTopOf="@+id/guideline"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="1.0"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.0" >
-        <android.support.v4.view.PagerTabStrip
-            android:id="@+id/pagertab"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_gravity="bottom"/>
-    </android.support.v4.view.ViewPager>
-</android.support.constraint.ConstraintLayout>
+        android:id="@+id/viewPager"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_above="@id/radioGroup" />
+
+
+    <RadioGroup
+        android:id="@+id/radioGroup"
+        android:layout_width="match_parent"
+        android:layout_height="55dp"
+        android:layout_alignParentBottom="true"
+        android:background="@color/white"
+        android:orientation="horizontal">
+
+        <RadioButton
+            android:id="@+id/rb_sale"
+            style="@style/style_RadioButton"
+            android:checked="true"
+            android:drawableTop="@drawable/rb_sale_selector"
+            android:text="收款" />
+
+        <RadioButton
+            android:id="@+id/rb_trans"
+            style="@style/style_RadioButton"
+            android:drawableTop="@drawable/rb_trans_selector"
+            android:text="记录" />
+
+        <RadioButton
+            android:id="@+id/rb_manage"
+            style="@style/style_RadioButton"
+            android:drawableTop="@drawable/rb_manage_selector"
+            android:text="管理" />
+    </RadioGroup>
+
+</RelativeLayout>

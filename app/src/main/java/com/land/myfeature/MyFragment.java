@@ -13,8 +13,6 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
 
-import com.land.myfeature.myutils.DeviceUtils;
-
 
 /**
  * A simple {@link Fragment} subclass.
@@ -27,6 +25,19 @@ public class MyFragment extends Fragment {
     private OnFragmentInteractionListener onFragmentInteractionListener;
     private  Button button;
 
+    private boolean mIsInited;
+    private boolean mIsPrepared;
+
+    private TextView tv;
+
+    public static MyFragment newInstance(String str) {
+        Log.d(TAG, "MyFragment Instance has be created!");
+        MyFragment myFragment = new MyFragment();
+        Bundle bundle = new Bundle();
+        bundle.putString(ARG_PARAM, str);
+        myFragment.setArguments(bundle);
+        return myFragment;
+    }
 
     @Override
     public void onAttach(Context context) {
@@ -46,29 +57,56 @@ public class MyFragment extends Fragment {
         Log.d(TAG, "onAttach: mParam = " + mParam);
     }
 
+    public void lazyLoad() {
+        if (getUserVisibleHint() && mIsPrepared && !mIsInited) {
+            //异步初始化，在初始化后显示正常UI
+            loadData();
+        }
+    }
+
+    private void loadData() {
+        new Thread() {
+            public void run() {
+                //1. 加载数据
+                //2. 更新UI
+                //3. mIsInited = true
+                mActivity.runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        tv.setText(mParam + "加载ing");
+                    }
+                });
+
+
+                try {
+                    Thread.sleep(1000);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+
+                mActivity.runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        tv.setText(mParam + "加载完毕");
+                    }
+                });
+
+                mIsInited = true;
+            }
+        }.start();
+    }
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         Log.d(TAG, "[onCreateView] Begin");
         View rootView = inflater.inflate(R.layout.fragment_my, container, false);
-        TextView tv = rootView.findViewById(R.id.tv_myfragment_1);
-        tv.setText(mParam);
-        button = rootView.findViewById(R.id.button1);
-        button.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                onFragmentInteractionListener.onItemClick("切换至Fragment2");
-//                ((MainActivity)mActivity).changeFragment();
-
-                Log.d(TAG, "Device Screen Heigth = "+ DeviceUtils.getDeviceScreenHeigthPixels(mActivity));
-                Log.d(TAG, "Device Screen Width =  "+ DeviceUtils.getDeviceScreenWidthPixels(mActivity));
-                Log.d(TAG, "Device Screen Dpi =  "+ DeviceUtils.getDeviceScreenDpi(mActivity));
-            }
-        });
+        tv = rootView.findViewById(R.id.tv_myfragment_1);
+        mIsPrepared = true;
+        lazyLoad();
         return rootView;
     }
-
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -82,13 +120,12 @@ public class MyFragment extends Fragment {
         super.onStart();
     }
 
-    public static MyFragment newInstance(String str){
-        Log.d(TAG, "MyFragment Instance has be created!");
-        MyFragment myFragment = new MyFragment();
-        Bundle bundle = new Bundle();
-        bundle.putString(ARG_PARAM,str);
-        myFragment.setArguments(bundle);
-        return myFragment;
+    @Override
+    public void setUserVisibleHint(boolean isVisibleToUser) {
+        super.setUserVisibleHint(isVisibleToUser);
+        if (isVisibleToUser) {
+            lazyLoad();
+        }
     }
 
     @Override
@@ -127,13 +164,11 @@ public class MyFragment extends Fragment {
         super.onDetach();
     }
 
-
+    public void setButton(String buttonName){
+        button.setText(buttonName);
+    }
 
     public interface OnFragmentInteractionListener {
         void onItemClick(String str);
-    }
-
-    public void setButton(String buttonName){
-        button.setText(buttonName);
     }
 }

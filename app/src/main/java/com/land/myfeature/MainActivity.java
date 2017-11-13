@@ -1,9 +1,9 @@
 package com.land.myfeature;
 
 import android.content.Intent;
+import android.os.Bundle;
 import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -18,11 +18,11 @@ public class MainActivity extends AppCompatActivity implements MyFragment.OnFrag
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        if(savedInstanceState == null){
-            this.getSupportFragmentManager().beginTransaction()
-                    .add(R.id.container,MyFragment.newInstance("myfrag1"),"myfrag1")
-                    .commit();
-        }
+//        if(savedInstanceState == null){
+//            this.getSupportFragmentManager().beginTransaction()
+//                    .add(R.id.container,MyFragment.newInstance("myfrag1"),"myfrag1")
+//                    .commit();
+//        }
 
 
         Button button = (Button)findViewById(R.id.button1);
@@ -37,10 +37,10 @@ public class MainActivity extends AppCompatActivity implements MyFragment.OnFrag
     }
 
     public void changeFragment(){
-        this.getSupportFragmentManager().beginTransaction()
-                .replace(R.id.container,MyFragment2.newInstance("myfrag2"),"myfrag2")
-                .addToBackStack(null)
-                .commit();
+//        this.getSupportFragmentManager().beginTransaction()
+//                .replace(R.id.container,MyFragment2.newInstance("myfrag2"),"myfrag2")
+//                .addToBackStack(null)
+//                .commit();
     }
 
     @Override
@@ -54,13 +54,13 @@ public class MainActivity extends AppCompatActivity implements MyFragment.OnFrag
         Log.d(TAG, "[onResume] Begin");
         super.onResume();
         Handler handler = new Handler();
-        handler.postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                MyFragment frag1 = (MyFragment)MainActivity.this.getSupportFragmentManager().findFragmentByTag("myfrag1");
-                frag1.setButton("btn");
-            }
-        }, 2000);
+//        handler.postDelayed(new Runnable() {
+//            @Override
+//            public void run() {
+//                MyFragment frag1 = (MyFragment)MainActivity.this.getSupportFragmentManager().findFragmentByTag("myfrag1");
+//                frag1.setButton("btn");
+//            }
+//        }, 2000);
 
 
     }

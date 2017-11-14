@@ -25,18 +25,28 @@ public class MainActivity extends AppCompatActivity implements MyFragment.OnFrag
 //        }
 
 
-        Button button = (Button)findViewById(R.id.button1);
+        Button button = findViewById(R.id.button1);
 
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(MainActivity.this,ViewPageActivity.class);
+                Intent intent = new Intent(MainActivity.this, ViewPageActivity.class);
+                startActivity(intent);
+            }
+        });
+
+        Button button1 = findViewById(R.id.btn_main_1);
+
+        button1.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(MainActivity.this, BottomNaviBarActivity.class);
                 startActivity(intent);
             }
         });
     }
 
-    public void changeFragment(){
+    public void changeFragment() {
 //        this.getSupportFragmentManager().beginTransaction()
 //                .replace(R.id.container,MyFragment2.newInstance("myfrag2"),"myfrag2")
 //                .addToBackStack(null)
@@ -86,9 +96,8 @@ public class MainActivity extends AppCompatActivity implements MyFragment.OnFrag
 
     @Override
     public void onItemClick(String str) {
-        Log.d(TAG, "onItemClick: str = "+ str);
+        Log.d(TAG, "onItemClick: str = " + str);
     }
-
 
 
 }

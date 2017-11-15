@@ -1,6 +1,9 @@
 package com.land.myfeature;
 
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.Gravity;
@@ -10,7 +13,16 @@ import com.ashokvarma.bottomnavigation.BottomNavigationItem;
 import com.ashokvarma.bottomnavigation.ShapeBadgeItem;
 import com.ashokvarma.bottomnavigation.TextBadgeItem;
 
-public class BottomNaviBarActivity extends AppCompatActivity {
+import java.util.ArrayList;
+import java.util.List;
+
+
+/**
+ * @author nikai
+ * @date 2017-11-15
+ * @功能描述 BottomNavigationBar + fragment 组合底部导航栏功能，实现fragement 懒加载模式。
+ */
+public class BottomNaviBarActivity extends AppCompatActivity implements MyFragment.OnFragmentInteractionListener {
     private static final String TAG = "BottomNaviBarActivity";
 
     private BottomNavigationBar mBottomNavigationBar;
@@ -20,11 +32,20 @@ public class BottomNaviBarActivity extends AppCompatActivity {
     private TextBadgeItem mTextBadgeItem;
     private ShapeBadgeItem mShapeBadgeItem;
 
+    private MyFragment saleFragment;
+    private MyFragment2 transFragment;
+    private MyFragment3 manageFragment;
+
+    private List<Fragment> fragmentList = new ArrayList<>();
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_bottom_navi_bar);
+
         initBadge();
+        setDefaultFragment();
         InitNavigationBar();
 
         new Thread() {
@@ -50,9 +71,7 @@ public class BottomNaviBarActivity extends AppCompatActivity {
 
     }
 
-
     private void InitNavigationBar() {
-
 
         saleBottomNavigationItem = new BottomNavigationItem(R.mipmap.sale_normal, "收款")
                 .setActiveColorResource(R.color.blue_text);
@@ -66,14 +85,43 @@ public class BottomNaviBarActivity extends AppCompatActivity {
         mBottomNavigationBar.setTabSelectedListener(new BottomNavigationBar.OnTabSelectedListener() {
             @Override
             public void onTabSelected(int position) {
+                Log.d("onTabSelected", "onTabSelected: " + position);
+                FragmentManager fm = getSupportFragmentManager();
+                FragmentTransaction transaction = fm.beginTransaction();
                 switch (position) {
                     case 0:
+                        if (saleFragment == null) {
+                            Log.d(TAG, "onTabSelected: " + "saleFragment is init");
+                            saleFragment = MyFragment.newInstance("frag1");
+                            fragmentList.add(saleFragment);
+                            transaction.add(R.id.fragment_container, saleFragment);
+                            transaction.commit();
+                        }
+
+                        showFragment(saleFragment);
                         break;
                     case 1:
                         mTextBadgeItem.hide();
+                        if (transFragment == null) {
+                            Log.d(TAG, "onTabSelected: " + "transFragment is init");
+                            transFragment = MyFragment2.newInstance("frag2");
+                            fragmentList.add(transFragment);
+                            transaction.add(R.id.fragment_container, transFragment);
+                            transaction.commit();
+                        }
+
+                        showFragment(transFragment);
                         break;
                     case 2:
                         mShapeBadgeItem.hide();
+                        if (manageFragment == null) {
+                            Log.d(TAG, "onTabSelected: " + "manageFragment is init");
+                            manageFragment = MyFragment3.newInstance("frag3");
+                            fragmentList.add(manageFragment);
+                            transaction.add(R.id.fragment_container, manageFragment);
+                            transaction.commit();
+                        }
+                        showFragment(manageFragment);
                         break;
                     default:
                         break;
@@ -167,7 +215,7 @@ public class BottomNaviBarActivity extends AppCompatActivity {
                 .setBorderWidth(2)//边框宽度
                 .setBorderColor("#ff0000")//边框颜色
                 .setBackgroundColor("#ff0000")//背景颜色
-                .setGravity(Gravity.RIGHT | Gravity.TOP)//位置
+                .setGravity(Gravity.END | Gravity.TOP)//位置
                 .setText("1")//显示文字
                 .setTextColor("#ffffff")//文字颜色
                 .setAnimationDuration(200)//渐退、渐出的时间
@@ -182,5 +230,38 @@ public class BottomNaviBarActivity extends AppCompatActivity {
                 .setEdgeMarginInDp(this, 2)
                 .setHideOnSelect(false)
                 .hide();
+    }
+
+    private void setDefaultFragment() {
+
+        if (saleFragment == null) {
+            FragmentManager fm = getSupportFragmentManager();
+            FragmentTransaction transaction = fm.beginTransaction();
+            Log.d(TAG, "onTabSelected: " + "saleFragment is init");
+            saleFragment = MyFragment.newInstance("frag1");
+            transaction.add(R.id.fragment_container, saleFragment);
+            transaction.commit();
+        }
+        showFragment(saleFragment);
+    }
+
+    private void showFragment(Fragment fragment) {
+        FragmentTransaction mFragmentTransaction = getSupportFragmentManager().beginTransaction();
+
+        for (Fragment mFragment : fragmentList) {
+            if (mFragment.equals(fragment)) {
+                mFragmentTransaction.show(mFragment);
+            } else {
+                mFragmentTransaction.hide(mFragment);
+            }
+        }
+
+        mFragmentTransaction.commit();
+    }
+
+
+    @Override
+    public void onItemClick(String str) {
+
     }
 }

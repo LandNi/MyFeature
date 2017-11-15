@@ -12,6 +12,7 @@ import android.widget.Button;
 public class MainActivity extends AppCompatActivity implements MyFragment.OnFragmentInteractionListener {
     private static final String TAG = "MainActivity";
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         Log.d(TAG, "[onCreate] Begin");
@@ -44,6 +45,17 @@ public class MainActivity extends AppCompatActivity implements MyFragment.OnFrag
                 startActivity(intent);
             }
         });
+
+
+        Button button2 = findViewById(R.id.btn_main_2);
+        button2.setText("DialogFragment");
+        button2.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                MyDialogFragment myDialogFragment = MyDialogFragment.newInstance();
+                myDialogFragment.show(MainActivity.this.getSupportFragmentManager(), "fb1");
+            }
+        });
     }
 
     public void changeFragment() {
@@ -52,6 +64,7 @@ public class MainActivity extends AppCompatActivity implements MyFragment.OnFrag
 //                .addToBackStack(null)
 //                .commit();
     }
+
 
     @Override
     protected void onStart() {

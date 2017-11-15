@@ -65,6 +65,8 @@ public class ViewPageActivity extends AppCompatActivity implements MyFragment.On
         viewPager.setOffscreenPageLimit(2);
         viewPager.setAdapter(new PosFragmentPagerAdapter(getSupportFragmentManager(), alFragment));
         viewPager.setCurrentItem(0);
+
+        //TODO 优化滑动问题，放开手指后滑动过快
         viewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
             @Override
             public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {

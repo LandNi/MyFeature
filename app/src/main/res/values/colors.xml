@@ -8,5 +8,5 @@
     <color name="gray">#999999</color>
     <color name="gray_text">#bfbfbf</color>
     <color name="blue_text">#1296db</color>
-
+    <color name="app_main_color">#3F51B5</color>
 </resources>

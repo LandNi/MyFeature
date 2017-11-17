@@ -12,6 +12,7 @@ import android.widget.Button;
 public class MainActivity extends AppCompatActivity implements MyFragment.OnFragmentInteractionListener {
     private static final String TAG = "MainActivity";
 
+    private PosDialogFragment posDialogFragment;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -52,10 +53,16 @@ public class MainActivity extends AppCompatActivity implements MyFragment.OnFrag
         button2.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                MyDialogFragment myDialogFragment = MyDialogFragment.newInstance();
-                myDialogFragment.show(MainActivity.this.getSupportFragmentManager(), "fb1");
+                posDialogFragment = DialogFragmentHelper.showConnectProgress(getSupportFragmentManager(), "连接中。。。");
+
+                new Handler().postDelayed(new Runnable() {
+                    public void run() {
+                        posDialogFragment.dismiss();
+                    }
+                }, 5000);
             }
         });
+
     }
 
     public void changeFragment() {

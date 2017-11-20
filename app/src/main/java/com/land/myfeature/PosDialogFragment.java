@@ -30,9 +30,20 @@ public class PosDialogFragment extends DialogFragment {
      */
     private OnCallDialog mOnCallDialog;
 
+    /**
+     * 监听弹出窗是否被取消
+     */
+    private OnDialogCancelListener mCancelListener;
+
+
     public static PosDialogFragment newInstance(OnCallDialog callDialog, boolean cancelable) {
+        return newInstance(callDialog, cancelable, null);
+    }
+
+    public static PosDialogFragment newInstance(OnCallDialog callDialog, boolean cancelable, OnDialogCancelListener cancelListener) {
         PosDialogFragment intance = new PosDialogFragment();
         intance.mOnCallDialog = callDialog;
+        intance.mCancelListener = cancelListener;
         intance.setCancelable(cancelable);
         return intance;
     }
@@ -70,6 +81,16 @@ public class PosDialogFragment extends DialogFragment {
     }
 
     @Override
+    public void onCancel(DialogInterface dialog) {
+        super.onCancel(dialog);
+        Log.d(TAG, "onCancel: Dialog canceled");
+        if (mCancelListener != null) {
+            mCancelListener.onCancel();
+        }
+    }
+
+
+    @Override
     public void dismiss() {
         super.dismiss();
         Log.d(TAG, "dismiss: invoke");
@@ -97,6 +118,10 @@ public class PosDialogFragment extends DialogFragment {
     public void onDetach() {
         super.onDetach();
         Log.d(TAG, "onDetach: invoke");
+    }
+
+    public interface OnDialogCancelListener {
+        void onCancel();
     }
 
 

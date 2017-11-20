@@ -28,4 +28,5 @@ dependencies {
     androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.1'
     implementation 'com.airbnb.android:lottie:2.2.5'
     implementation 'com.ashokvarma.android:bottom-navigation-bar:2.0.3'
+    implementation 'com.android.support:design:26.1.0'
 }

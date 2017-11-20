@@ -17,7 +17,8 @@
             </intent-filter>
         </activity>
         <activity android:name=".ViewPageActivity" />
-        <activity android:name=".BottomNaviBarActivity"></activity>
+        <activity android:name=".BottomNaviBarActivity" />
+        <activity android:name=".TabLayoutActivity"></activity>
     </application>
 
 </manifest>

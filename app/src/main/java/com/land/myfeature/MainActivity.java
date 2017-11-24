@@ -9,6 +9,9 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 
+import com.land.myfeature.retrofit.SaleRequest;
+import com.land.myfeature.rxjava2.Rxjava2Demo;
+
 import java.util.Calendar;
 import java.util.GregorianCalendar;
 
@@ -146,6 +149,24 @@ public class MainActivity extends AppCompatActivity implements MyFragment.OnFrag
                         Log.d(TAG, "onDataResult: result" + result);
                     }
                 }, true);
+            }
+        });
+
+        Button button6 = findViewById(R.id.btn_main_6);
+        button6.setText("Retrofit");
+        button6.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                SaleRequest.sale();
+            }
+        });
+
+        Button button7 = findViewById(R.id.btn_main_7);
+        button7.setText("RxJava2");
+        button7.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Rxjava2Demo.demoOne();
             }
         });
 

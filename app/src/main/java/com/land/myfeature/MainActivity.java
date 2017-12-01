@@ -9,8 +9,8 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 
+import com.land.myfeature.myutils.MySoundPool;
 import com.land.myfeature.retrofit.SaleRequest;
-import com.land.myfeature.rxjava2.Rxjava2Demo;
 
 import java.util.Calendar;
 import java.util.GregorianCalendar;
@@ -67,6 +67,7 @@ public class MainActivity extends AppCompatActivity implements MyFragment.OnFrag
                         posDialogFragment.dismiss();
                     }
                 }, 5000);
+                MySoundPool.getInstance().playKeyPressStandard();
             }
         });
 
@@ -76,7 +77,7 @@ public class MainActivity extends AppCompatActivity implements MyFragment.OnFrag
         button2.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
+                MySoundPool.getInstance().palyMira();
                 posDialogFragment = DialogFragmentHelper.showConfirmDialog(getSupportFragmentManager(),
                         "无任何渠道号！", new IDialogResultListener<Integer>() {
                             @Override
@@ -162,11 +163,12 @@ public class MainActivity extends AppCompatActivity implements MyFragment.OnFrag
         });
 
         Button button7 = findViewById(R.id.btn_main_7);
-        button7.setText("RxJava2");
+        button7.setText("输入金额");
         button7.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Rxjava2Demo.demoOne();
+                Intent intent = new Intent(MainActivity.this, AmountInputActivity.class);
+                startActivity(intent);
             }
         });
 

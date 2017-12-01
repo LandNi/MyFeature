@@ -2,13 +2,11 @@ package com.land.myfeature.retrofit;
 
 import android.util.Log;
 
-import com.land.myfeature.myutils.PrintUtils;
+import com.land.myfeature.rxjava2.BaseObserver;
 
-import io.reactivex.Observer;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.schedulers.Schedulers;
-import okhttp3.MediaType;
 import retrofit2.Retrofit;
 import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory;
 
@@ -22,36 +20,22 @@ public class SaleRequest {
     private static final String TAG = "SaleRequest";
 
     public static void sale() {
-        MediaType mediaType = MediaType.parse("application/json; charset=utf-8");
 
         BaseReqPack baseReqPack = new BaseReqPack();
         Retrofit retrofit = new Retrofit.Builder()
                 .baseUrl("http://192.168.248.14:8020/starryPsv/")
+//                .baseUrl("https://wallet.redstarpay.com/starryPsv/")
+                .client(OkHttpUtils.getInstance().getOkHttpClient())
                 .addConverterFactory(FastJsonConverterFactory.create())
                 .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
                 .build();
 
         ISaleRequestPost iSaleRequestPost = retrofit.create(ISaleRequestPost.class);
-//        Call<BaseRespPack> call = iSaleRequestPost.getSaleResult(baseReqPack);
-//        call.enqueue(new Callback<BaseRespPack>() {
-//            @Override
-//            public void onResponse(Call<BaseRespPack> call, Response<BaseRespPack> response) {
-//                BaseRespPack baseRespPack = response.body();
-//
-//                Log.d(TAG, "response_code:" + response.code());
-//                Log.d(TAG, "response_body:" + PrintUtils.printJavaBean(baseRespPack));
-//            }
-//
-//            @Override
-//            public void onFailure(Call<BaseRespPack> call, Throwable t) {
-//                Log.d(TAG, "onFailure: ",t);
-//            }
-//        });
 
         iSaleRequestPost.getSaleResult(baseReqPack)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Observer<BaseRespPack>() {
+                .subscribe(new BaseObserver<BaseRespPack>() {
                     Disposable disposable;
 
                     @Override
@@ -61,14 +45,14 @@ public class SaleRequest {
 
                     @Override
                     public void onNext(BaseRespPack baseRespPack) {
-
-                        Log.d(TAG, "response_body:" + PrintUtils.printJavaBean(baseRespPack));
                         disposable.dispose();
                     }
 
                     @Override
                     public void onError(Throwable e) {
+                        super.handleError(e);
                         Log.d(TAG, "onFailure: ", e);
+
                         disposable.dispose();
                     }
 

@@ -27,6 +27,7 @@ public class MainActivity extends AppCompatActivity implements MyFragment.OnFrag
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        MySoundPool.getInstance();
 
         Button btn1 = findViewById(R.id.button1);
         btn1.setOnClickListener(new View.OnClickListener() {

@@ -40,7 +40,7 @@ public class OkHttpUtils {
         builder.connectTimeout(CONNECT_TIMEOUT_MILLISEC, TimeUnit.SECONDS);
         builder.connectTimeout(READ_TIMEOUT_MILLISEC, TimeUnit.SECONDS);
 
-        if (BuildConfig.DEBUG) {
+        if (BuildConfig.DEBUG && false) {
             builder.addInterceptor(generateInterceptor());
         }
 

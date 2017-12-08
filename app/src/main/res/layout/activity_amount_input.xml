@@ -52,7 +52,6 @@
             android:background="@color/colorPrimaryDark"
             android:gravity="right|center"
             android:maxLines="1"
-            android:paddingLeft="17dp"
             android:paddingRight="20dp"
             android:text="￥0.00"
             android:textColor="@color/white"

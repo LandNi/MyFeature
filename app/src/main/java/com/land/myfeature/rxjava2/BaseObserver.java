@@ -32,10 +32,10 @@ public abstract class BaseObserver<T extends BaseRespPack> implements Observer<T
 
     }
 
-    public void handleError(Throwable e) {
+    public ExceptionHandle.ResponeThrowable handleError(Throwable e) {
         ExceptionHandle.ResponeThrowable ex = ExceptionHandle.handleException(e);
         Log.d(TAG, "e.code = " + ex.code + "|e.String = " + ex.message);
-
+        return ex;
     }
 
     @Override

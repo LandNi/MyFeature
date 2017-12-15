@@ -2,30 +2,30 @@ package com.land.myfeature;
 
 import android.util.Log;
 
+import com.land.myfeature.mvp.AbstractMvpPersenter;
+
 /**
  * com.land.myfeature
  * Created by nikai on 2017-12-07.
  * Description:
  */
 
-public class PaymentPresenter {
+public class PaymentPresenter extends AbstractMvpPersenter<IPaymentView> {
     private static final String TAG = "PaymentPresenter";
-    private final IPaymentView mIPaymentView;
     private final ISaleRequest mIRequest;
 
-    public PaymentPresenter(IPaymentView mIPaymentView) {
-        this.mIPaymentView = mIPaymentView;
+    public PaymentPresenter() {
         mIRequest = new SaleRequst1();
     }
 
     public void saleRequset() {
-        mIPaymentView.requestLoading();
+        getMvpView().requestLoading();
         mIRequest.sale(new IActionCallback<String>() {
             @Override
             public void onActionResult(boolean isSuccessful, String errorMessage, String object) {
                 if (!isSuccessful) {
                     Log.d(TAG, errorMessage);
-                    mIPaymentView.resultSuccess();
+                    getMvpView().resultSuccess();
                 } else {
                     Log.d(TAG, "成功：" + errorMessage);
                 }

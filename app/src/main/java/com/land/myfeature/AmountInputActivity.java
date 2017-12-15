@@ -1,7 +1,6 @@
 package com.land.myfeature;
 
 import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
 import android.util.SparseArray;
 import android.view.View;
@@ -10,10 +9,11 @@ import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.land.myfeature.mvp.AbstractMvpActivity;
 import com.land.myfeature.myutils.LogUtils;
 import com.land.myfeature.myutils.MySoundPool;
 
-public class AmountInputActivity extends AppCompatActivity implements View.OnClickListener, IPaymentView {
+public class AmountInputActivity extends AbstractMvpActivity<IPaymentView, PaymentPresenter> implements View.OnClickListener, IPaymentView {
 
     private static final String TAG = "AmountInputActivity";
     private static final String DELETE_KEY_VALUE = "del";
@@ -22,7 +22,6 @@ public class AmountInputActivity extends AppCompatActivity implements View.OnCli
     private SparseArray<String> btnAmount;
     private String strDisplayAmount;
     private TextView tvAmount;
-    private PaymentPresenter mPaymentPresenter;
     private PosDialogFragment posDialogFragment;
 
     @Override
@@ -30,7 +29,6 @@ public class AmountInputActivity extends AppCompatActivity implements View.OnCli
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_amount_input);
         initInputAmountView();
-        mPaymentPresenter = new PaymentPresenter(this);
     }
 
     @Override
@@ -60,13 +58,14 @@ public class AmountInputActivity extends AppCompatActivity implements View.OnCli
                 break;
 
             case R.id.btn_pay_homeloan:
-                mPaymentPresenter.saleRequset();
+                getPresenter().saleRequset();
                 break;
             default:
                 break;
 
         }
     }
+
 
 
     private void initInputAmountView() {
@@ -123,6 +122,12 @@ public class AmountInputActivity extends AppCompatActivity implements View.OnCli
 
     }
 
+
+    @Override
+    protected PaymentPresenter creatPresenter() {
+        return new PaymentPresenter();
+    }
+
     private void pressAmountKey(String inputKey) {
         if (TextUtils.isEmpty(inputKey) || ".".equals(inputKey)) {
             LogUtils.d(TAG, "Press Invalid Key");
@@ -142,7 +147,7 @@ public class AmountInputActivity extends AppCompatActivity implements View.OnCli
         } else {
 
             if (tvAmount.length() >= MAX_INPUT_KEY_COUNT) {
-                LogUtils.d(TAG, "Press Key Count Out");
+                LogUtils.d(TAG, "Press Key Count Over");
             } else {
                 String strTmpAmount = strDisplayAmount.substring(1) + inputKey;
                 LogUtils.d(TAG, "strTmpAmount:" + strTmpAmount);
